@@ -1,16 +1,15 @@
 
-from django_celery_beat.models import PeriodicTask, IntervalSchedule, CrontabSchedule, SolarSchedule, ClockedSchedule
-from django_celery_results.admin import TaskResult, GroupResult, TaskResultAdmin, GroupResultAdmin
-
 import unfold
 from django.contrib import admin
-from django_superapp.helpers import SuperAppModelAdmin
-from django_superapp.sites import superapp_admin_site
-from unfold.decorators import action
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django_celery_beat.models import PeriodicTask, IntervalSchedule, CrontabSchedule, SolarSchedule, ClockedSchedule
+from django_celery_results.admin import TaskResult, GroupResult, TaskResultAdmin, GroupResultAdmin
+from unfold.decorators import action
 
+from superapp.apps.admin_portal.admin import SuperAppModelAdmin
+from superapp.apps.admin_portal.sites import superapp_admin_site
 from superapp.apps.tasks.management.commands.truncate_all_tasks import drop_all_tasks
 
 
