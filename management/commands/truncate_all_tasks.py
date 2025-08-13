@@ -7,14 +7,26 @@ import redis
 
 
 def drop_all_tasks():
-    url = urlparse(os.environ.get('REDIS_BROKER_URL'))
+    redis_url = os.environ.get('REDIS_BROKER_URL')
+    if not redis_url:
+        raise ValueError("REDIS_BROKER_URL environment variable not set")
+    
+    url = urlparse(redis_url)
 
     # Clear Redis
+    # Extract database number from path, default to 0 if not specified
+    db = 0
+    if url.path and len(url.path) > 1:
+        try:
+            db = int(url.path[1:])
+        except ValueError:
+            db = 0
+    
     redis_client = redis.StrictRedis(
-        host=url.hostname,
-        port=url.port,
+        host=url.hostname or 'localhost',
+        port=url.port or 6379,
         password=url.password,
-        db=int(url.path[1:]) if url.path and len(url.path) > 1 else 0
+        db=db
     )
     redis_client.flushall()
 
